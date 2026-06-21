@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virada Financeira — Planilha de Controle Financeiro</title>
+  <meta name="description" content="Controle suas receitas, gastos, cartão e parcelas num lugar só. Planilha pronta para usar no Google Sheets por apenas R$9,90." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Virada Financeira — Planilha de Controle Financeiro" />
+  <meta property="og:description" content="Pare de perder dinheiro sem saber para onde ele vai. Planilha completa no Google Sheets por R$9,90." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1e293b;
+      --navy2:  #334155;
+      --green:  #16a34a;
+      --green2: #15803d;
+      --red:    #dc2626;
+      --amber:  #d97706;
+      --blue:   #2563eb;
+      --purple: #7c3aed;
+      --gray:   #64748b;
+      --light:  #f1f5f9;
+      --white:  #ffffff;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--navy);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f2027 100%);
+      color: var(--white);
+      padding: 80px 24px 64px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(22,163,74,.18);
+      color: #4ade80;
+      border: 1px solid rgba(74,222,128,.3);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      padding: 6px 16px;
+      border-radius: 99px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 720px;
+      margin: 0 auto 20px;
+    }
+
+    .hero h1 span { color: #4ade80; }
+
+    .hero p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #94a3b8;
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 16px 40px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 4px 20px rgba(22,163,74,.4);
+      text-decoration: none;
+    }
+
+    .btn-primary:hover { background: var(--green2); transform: translateY(-2px); }
+
+    .hero-sub {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    /* Preview planilha */
+    .preview-wrap {
+      margin-top: 56px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .preview-bar {
+      background: #1e293b;
+      padding: 10px 16px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .preview-bar span {
+      width: 12px; height: 12px; border-radius: 50%;
+      display: inline-block;
+    }
+    .dot-red    { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green  { background: #22c55e; }
+
+    .preview-sheet {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: #1e3a5f;
+      padding: 1px;
+      font-size: 11px;
+    }
+
+    .preview-col {
+      background: #0f1e30;
+      padding: 12px;
+    }
+
+    .preview-hdr {
+      background: #1e293b;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 6px 8px;
+      text-align: center;
+      margin-bottom: 8px;
+      border-radius: 4px;
+    }
+
+    .preview-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      color: #cbd5e1;
+      font-size: 11px;
+    }
+
+    .preview-row .val { color: #4ade80; font-weight: 600; }
+    .preview-row .red { color: #f87171; }
+    .preview-row .amber { color: #fbbf24; }
+
+    .preview-card {
+      text-align: center;
+      padding: 10px 8px;
+      margin-bottom: 6px;
+      border-radius: 6px;
+    }
+
+    .preview-card .lbl { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .preview-card .val { font-size: 16px; font-weight: 800; margin-top: 2px; }
+
+    .card-green { background: rgba(22,163,74,.15); }
+    .card-green .lbl, .card-green .val { color: #4ade80; }
+    .card-red { background: rgba(220,38,38,.15); }
+    .card-red .lbl, .card-red .val { color: #f87171; }
+    .card-blue { background: rgba(37,99,235,.15); }
+    .card-blue .lbl, .card-blue .val { color: #60a5fa; }
+
+    .preview-bar2 {
+      height: 8px;
+      background: #1e3a5f;
+      border-radius: 4px;
+      margin: 6px 0;
+      overflow: hidden;
+    }
+    .preview-bar2 .fill { height: 100%; border-radius: 4px; }
+
+    /* ── SEÇÕES GENÉRICAS ─────────────────────────────── */
+    section { padding: 80px 24px; }
+
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--gray);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin: 0 auto 56px;
+    }
+
+    /* ── DOR ──────────────────────────────────────────── */
+    .dor { background: var(--light); }
+
+    .dor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .dor-card {
+      background: var(--white);
+      border-left: 4px solid var(--red);
+      border-radius: 8px;
+      padding: 20px 22px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+
+    .dor-card .icon { font-size: 24px; margin-bottom: 10px; }
+    .dor-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .dor-card p { font-size: .9rem; color: var(--gray); }
+
+    /* ── FEATURES ─────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 24px;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 8px 30px rgba(0,0,0,.1);
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+    }
+
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p  { font-size: .9rem; color: var(--gray); }
+
+    /* ── COMO FUNCIONA ────────────────────────────────── */
+    .como { background: var(--light); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      counter-reset: steps;
+    }
+
+    .step {
+      text-align: center;
+      padding: 24px 16px;
+    }
+
+    .step-num {
+      width: 48px; height: 48px;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 800;
+      margin: 0 auto 16px;
+    }
+
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .step p  { font-size: .88rem; color: var(--gray); }
+
+    /* ── OFERTA ───────────────────────────────────────── */
+    .oferta { background: var(--navy); color: var(--white); text-align: center; }
+
+    .oferta .section-title { color: var(--white); }
+    .oferta .section-sub   { color: #94a3b8; }
+
+    .preco-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .preco-de {
+      color: #64748b;
+      font-size: 1rem;
+      text-decoration: line-through;
+    }
+
+    .preco-por {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 900;
+      color: #4ade80;
+      line-height: 1;
+      margin: 8px 0 4px;
+    }
+
+    .preco-desc { color: #94a3b8; font-size: .9rem; margin-bottom: 32px; }
+
+    .inclui {
+      text-align: left;
+      margin-bottom: 36px;
+    }
+
+    .inclui li {
+      list-style: none;
+      padding: 8px 0;
+      border-bottom: 1px solid #1e293b;
+      font-size: .95rem;
+      color: #cbd5e1;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .inclui li::before { content: "✅"; flex-shrink: 0; }
+
+    .garantia {
+      margin-top: 20px;
+      font-size: .8rem;
+      color: #64748b;
+    }
+
+    /* ── FAQ ──────────────────────────────────────────── */
+    .faq-list { max-width: 680px; margin: 0 auto; }
+
+    details {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    summary {
+      padding: 18px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    summary::after { content: "+"; font-size: 1.4rem; color: var(--gray); flex-shrink: 0; }
+    details[open] summary::after { content: "−"; }
+
+    details p {
+      padding: 0 20px 18px;
+      color: var(--gray);
+      font-size: .95rem;
+    }
+
+    /* ── CTA FINAL ────────────────────────────────────── */
+    .cta-final {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: var(--white);
+      text-align: center;
+      padding: 96px 24px;
+    }
+
+    .cta-final h2 {
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .cta-final h2 span { color: #4ade80; }
+
+    .cta-final p { color: #94a3b8; font-size: 1.05rem; margin-bottom: 40px; }
+
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer {
+      background: #0f172a;
+      color: #475569;
+      text-align: center;
+      padding: 32px 24px;
+      font-size: .85rem;
+    }
+
+    footer a { color: #64748b; }
+    footer a:hover { color: #94a3b8; }
+
+    /* ── RESPONSIVO ───────────────────────────────────── */
+    @media (max-width: 640px) {
+      section { padding: 56px 20px; }
+      .preview-sheet { grid-template-columns: 1fr; }
+      .preco-box { padding: 36px 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="badge">✦ Planilha Pronta no Google Sheets</div>
+
+    <h1>Sua vida financeira<br /><span>organizada em 1 planilha</span></h1>
+
+    <p>Controle receitas, contas fixas, gastos, cartão e parcelas num lugar só — sem fórmula difícil, sem app pago.</p>
+
+    <a href="#comprar" class="btn-primary">Quero a Planilha por R$9,90 →</a>
+
+    <p class="hero-sub">🔒 Compra segura via Kiwify &nbsp;·&nbsp; Acesso imediato</p>
+
+    <!-- Preview estilizado da planilha -->
+    <div class="preview-wrap">
+      <div class="preview-bar">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+        <span style="color:#475569;font-size:12px;margin-left:8px;">Virada Financeira — Google Sheets</span>
+      </div>
+      <div class="preview-sheet">
+
+        <!-- Coluna Esquerda -->
+        <div class="preview-col">
+          <div class="preview-hdr">🏠 Renda / Receitas</div>
+          <div class="preview-row"><span>Salário</span><span class="val">R$ 4.500</span></div>
+          <div class="preview-row"><span>Freelance</span><span class="val">R$ 500</span></div>
+          <div class="preview-row" style="font-weight:700;color:#e2e8f0"><span>TOTAL</span><span>R$ 5.000</span></div>
+
+          <div class="preview-hdr" style="margin-top:12px">📌 Contas Fixas</div>
+          <div class="preview-row"><span>Aluguel</span><span class="amber">Pend.</span></div>
+          <div class="preview-row"><span>Internet</span><span class="val">Pago</span></div>
+          <div class="preview-row"><span>Energia</span><span class="red">Aberto</span></div>
+        </div>
+
+        <!-- Coluna Meio -->
+        <div class="preview-col">
+          <div class="preview-card card-green">
+            <div class="lbl">💚 Receita</div>
+            <div class="val">R$ 5.000</div>
+          </div>
+          <div class="preview-card card-red">
+            <div class="lbl">❤️ Despesa</div>
+            <div class="val">R$ 3.240</div>
+          </div>
+          <div class="preview-card card-blue">
+            <div class="lbl">💙 Saldo</div>
+            <div class="val">R$ 1.760</div>
+          </div>
+          <div style="color:#94a3b8;font-size:9px;text-transform:uppercase;letter-spacing:.06em;margin:8px 0 4px">% Orçamento usado</div>
+          <div class="preview-bar2"><div class="fill" style="width:81%;background:#f59e0b"></div></div>
+          <div style="color:#fbbf24;font-weight:700;font-size:13px;text-align:right">81%</div>
+        </div>
+
+        <!-- Coluna Direita -->
+        <div class="preview-col">
+          <div class="preview-hdr">📊 Análise de Gastos</div>
+          <div class="preview-row">
+            <span style="color:#f87171">Fixas</span>
+            <span style="color:#f87171">R$ 1.580</span>
+            <span style="color:#94a3b8">49%</span>
+          </div>
+          <div class="preview-bar2"><div class="fill" style="width:49%;background:#dc2626"></div></div>
+          <div class="preview-row">
+            <span style="color:#fbbf24">Dia a Dia</span>
+            <span style="color:#fbbf24">R$ 795</span>
+            <span style="color:#94a3b8">25%</span>
+          </div>
+          <div class="preview-bar2"><div class="fill" style="width:25%;background:#d97706"></div></div>
+          <div class="preview-row">
+            <span style="color:#60a5fa">Cartão</span>
+            <span style="color:#60a5fa">R$ 395</span>
+            <span style="color:#94a3b8">12%</span>
+          </div>
+          <div class="preview-bar2"><div class="fill" style="width:12%;background:#2563eb"></div></div>
+          <div class="preview-row">
+            <span style="color:#c084fc">Parcelas</span>
+            <span style="color:#c084fc">R$ 380</span>
+            <span style="color:#94a3b8">12%</span>
+          </div>
+          <div class="preview-bar2"><div class="fill" style="width:12%;background:#7c3aed"></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOR ────────────────────────────────────────────── -->
+<section class="dor">
+  <div class="container">
+    <h2 class="section-title">Você se identifica com algum desses?</h2>
+    <p class="section-sub">Se a resposta for sim para pelo menos um, a Virada Financeira foi feita pra você.</p>
+
+    <div class="dor-grid">
+      <div class="dor-card">
+        <div class="icon">😰</div>
+        <h3>O dinheiro some e você não sabe para onde foi</h3>
+        <p>Você recebe, paga as contas básicas e no fim do mês o saldo tá zerado — sem saber onde foi parar.</p>
+      </div>
+      <div class="dor-card">
+        <div class="icon">😬</div>
+        <h3>Cartão e parcelas te assustam no fim do mês</h3>
+        <p>Você perde o controle das parcelas em aberto e o cartão sempre surpreende no fechamento.</p>
+      </div>
+      <div class="dor-card">
+        <div class="icon">🌀</div>
+        <h3>Já tentou montar uma planilha e desistiu</h3>
+        <p>Começou do zero, ficou complicado demais, largou de mão na segunda semana.</p>
+      </div>
+      <div class="dor-card">
+        <div class="icon">😶</div>
+        <h3>Fim do mês surpresa</h3>
+        <p>Você olha o saldo e não entende como o dinheiro acabou — mesmo achando que estava controlando.</p>
+      </div>
+      <div class="dor-card">
+        <div class="icon">📈</div>
+        <h3>Dívidas crescendo</h3>
+        <p>Você paga uma conta e surge outra. A sensação é que nunca vai sobrar nada.</p>
+      </div>
+      <div class="dor-card">
+        <div class="icon">🗂️</div>
+        <h3>Parcelas acumuladas</h3>
+        <p>Você tem tantas parcelas no cartão que já perdeu a conta de quantas são e quando terminam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Tudo que você precisa, num lugar só</h2>
+    <p class="section-sub">A planilha foi desenhada para ser simples de preencher e automática nos cálculos.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏠</div>
+        <h3>Renda e Receitas</h3>
+        <p>Registre todas as fontes de renda — salário, freelance, aluguel — e veja o total automático.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📌</div>
+        <h3>Contas Fixas com Status</h3>
+        <p>Marque cada conta como Pago, Pendente ou Em aberto. O status muda de cor automaticamente.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💸</div>
+        <h3>Gastos do Dia a Dia</h3>
+        <p>Mercado, combustível, lazer — tudo registrado com data e confirmação de pagamento.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <h3>Cartão de Crédito</h3>
+        <p>Acompanhe cada compra no cartão com valor, parcela e categoria separados.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Parcelas em Andamento</h3>
+        <p>Saiba exatamente quantas parcelas faltam de cada produto que você está pagando.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Análise de Gastos</h3>
+        <p>Veja quanto cada categoria representa do seu orçamento com semáforo de alerta automático.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMO FUNCIONA ─────────────────────────────────────── -->
+<section class="como">
+  <div class="container">
+    <h2 class="section-title">Pronta em menos de 2 minutos</h2>
+    <p class="section-sub">Sem instalação, sem cadastro — só copia e usa.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Compre e receba</h3>
+        <p>Após o pagamento, você recebe o acesso por e-mail imediatamente.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Faça uma cópia</h3>
+        <p>Abra o Google Sheets e clique em "Fazer uma cópia" — a planilha fica na sua conta do Google.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Execute o setup</h3>
+        <p>Clique em Executar uma vez — a planilha monta o painel completo com todos os módulos automaticamente.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Comece a usar</h3>
+        <p>Preencha seus dados e o painel já mostra saldo, análise e alertas em tempo real.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OFERTA ─────────────────────────────────────────────── -->
+<section class="oferta" id="comprar">
+  <div class="container">
+    <h2 class="section-title">Investimento único. Sem mensalidade.</h2>
+    <p class="section-sub">Uma vez só. Sua para sempre. Funciona no celular, tablet e computador.</p>
+
+    <div class="preco-box">
+      <p class="preco-de">De R$49,90</p>
+      <p class="preco-por">R$9,90</p>
+      <p class="preco-desc">pagamento único · acesso vitalício</p>
+
+      <ul class="inclui">
+        <li>Planilha completa no Google Sheets</li>
+        <li>Dashboard automático com saldo e análise</li>
+        <li>Controle de Renda, Fixas, Gastos, Cartão e Parcelas</li>
+        <li>Semáforo do orçamento com alertas visuais</li>
+        <li>Acesso vitalício na sua conta Google</li>
+      </ul>
+
+      <a href="#" class="btn-primary" style="display:block;text-align:center;font-size:1.15rem">
+        Quero a Planilha por R$9,90 →
+      </a>
+
+      <p class="garantia">🔒 Pagamento seguro · Kiwify · Pix, Cartão ou Boleto</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ───────────────────────────────────────────────── -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Dúvidas frequentes</h2>
+    <p class="section-sub" style="margin-bottom:40px"></p>
+
+    <div class="faq-list">
+      <details>
+        <summary>Precisa saber mexer em planilha?</summary>
+        <p>Não. A planilha é toda automatizada — você só preenche os valores. As fórmulas, cores e cálculos já estão prontos.</p>
+      </details>
+      <details>
+        <summary>Funciona no celular?</summary>
+        <p>Sim. O Google Sheets tem app gratuito para Android e iOS. Você consegue registrar os gastos direto pelo celular.</p>
+      </details>
+      <details>
+        <summary>Precisa de Excel ou softwares pagos?</summary>
+        <p>Não. A planilha roda no Google Sheets, que é 100% gratuito. Você só precisa de uma conta Google.</p>
+      </details>
+      <details>
+        <summary>Como vou receber a planilha?</summary>
+        <p>Após a compra, você recebe um e-mail com o link para acessar e copiar a planilha para sua conta Google. Acesso imediato.</p>
+      </details>
+      <details>
+        <summary>Tem garantia?</summary>
+        <p>Sim. Se por qualquer motivo a planilha não funcionar para você, entre em contato que resolvemos ou devolvemos o valor.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ──────────────────────────────────────────── -->
+<section class="cta-final">
+  <div class="container">
+    <h2>Chega de mês acabando<br />antes do <span>dinheiro</span></h2>
+    <p>Comece agora por R$9,90. Sem mensalidade. Sem complicação.</p>
+    <a href="#comprar" class="btn-primary" style="font-size:1.15rem">Quero a Planilha por R$9,90 →</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <p>© 2026 Virada Financeira &nbsp;·&nbsp; <a href="/politica-de-privacidade.html">Política de Privacidade</a></p>
+</footer>
+
+</body>
+</html>
