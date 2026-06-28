@@ -29,6 +29,10 @@
   /></noscript>
   <!-- End Meta Pixel Code -->
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -47,21 +51,36 @@
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--navy);
       background: var(--white);
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
+
+    h1, h2, h3, .preco-por, .step-num { font-family: 'Poppins', sans-serif; }
 
     a { color: inherit; text-decoration: none; }
 
     /* ── HERO ─────────────────────────────────────────── */
     .hero {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f2027 100%);
+      position: relative;
+      background: linear-gradient(135deg, #0b1220 0%, #15233b 45%, #0f2c2a 100%);
       color: var(--white);
       padding: 80px 24px 64px;
       text-align: center;
+      overflow: hidden;
     }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(600px circle at 20% 10%, rgba(34,197,94,.22), transparent 45%),
+        radial-gradient(600px circle at 85% 20%, rgba(59,130,246,.20), transparent 45%),
+        radial-gradient(500px circle at 60% 90%, rgba(168,85,247,.18), transparent 45%);
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
 
     .badge {
       display: inline-block;
@@ -96,20 +115,21 @@
 
     .btn-primary {
       display: inline-block;
-      background: var(--green);
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
       color: var(--white);
       font-size: 1.1rem;
       font-weight: 700;
-      padding: 16px 40px;
-      border-radius: 10px;
+      padding: 17px 42px;
+      border-radius: 12px;
       border: none;
       cursor: pointer;
-      transition: background .2s, transform .15s;
-      box-shadow: 0 4px 20px rgba(22,163,74,.4);
+      transition: transform .15s, box-shadow .2s, filter .2s;
+      box-shadow: 0 8px 24px rgba(22,163,74,.45);
       text-decoration: none;
+      letter-spacing: .01em;
     }
 
-    .btn-primary:hover { background: var(--green2); transform: translateY(-2px); }
+    .btn-primary:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(22,163,74,.55); }
 
     .hero-sub {
       margin-top: 16px;
@@ -422,6 +442,72 @@
     footer a { color: #64748b; }
     footer a:hover { color: #94a3b8; }
 
+    /* ── TRUST BAR ─────────────────────────────────────── */
+    .trust-bar {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px;
+      margin-top: 22px;
+      font-size: .82rem; color: #cbd5e1; font-weight: 500;
+    }
+    .trust-bar span {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 7px 14px; border-radius: 99px;
+    }
+
+    /* ── DEPOIMENTOS ───────────────────────────────────── */
+    .depo {
+      background: linear-gradient(135deg, #fafdff 0%, #eef6ff 100%);
+    }
+    .depo-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px;
+    }
+    .depo-card {
+      background: var(--white); border-radius: 16px; padding: 26px 24px;
+      box-shadow: 0 10px 30px rgba(30,41,59,.08);
+      border: 1px solid #eef2f7;
+      position: relative;
+    }
+    .depo-stars { color: #f59e0b; font-size: 1.05rem; letter-spacing: 2px; margin-bottom: 12px; }
+    .depo-card p { font-size: .98rem; color: #334155; line-height: 1.6; margin-bottom: 18px; font-style: italic; }
+    .depo-autor { display: flex; align-items: center; gap: 12px; }
+    .depo-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, #22c55e, #3b82f6);
+      color: #fff; font-weight: 800; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    .depo-autor .nome { font-weight: 700; font-size: .92rem; }
+    .depo-autor .cargo { font-size: .8rem; color: var(--gray); }
+    .depo-aviso {
+      text-align: center; margin-top: 28px; font-size: .82rem; color: var(--gray);
+      background: #fff7ed; border: 1px dashed #fdba74; border-radius: 10px;
+      padding: 12px 16px; max-width: 620px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ── GARANTIA ──────────────────────────────────────── */
+    .garantia-sec {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+      color: #fff; text-align: center;
+    }
+    .garantia-box {
+      max-width: 680px; margin: 0 auto; display: flex; align-items: center; gap: 28px;
+      text-align: left;
+    }
+    .garantia-selo {
+      flex-shrink: 0; width: 110px; height: 110px; border-radius: 50%;
+      background: rgba(255,255,255,.15); border: 3px solid rgba(255,255,255,.6);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    .garantia-selo .n { font-size: 2.4rem; font-weight: 900; line-height: 1; }
+    .garantia-selo .d { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+    .garantia-box h2 { font-size: clamp(1.4rem, 3.5vw, 2rem); margin-bottom: 8px; color: #fff; }
+    .garantia-box p { color: #dcfce7; font-size: 1rem; }
+    @media (max-width: 560px) {
+      .garantia-box { flex-direction: column; text-align: center; gap: 18px; }
+    }
+
     /* ── RESPONSIVO ───────────────────────────────────── */
     @media (max-width: 640px) {
       section { padding: 56px 20px; }
@@ -444,7 +530,14 @@
 
     <a href="https://pay.kiwify.com.br/5MQxZbv" class="btn-primary">Quero a Planilha por R$9,90 →</a>
 
-    <p class="hero-sub">🔒 Compra segura via Kiwify &nbsp;·&nbsp; Acesso imediato</p>
+    <p class="hero-sub">🔒 Compra 100% segura via Kiwify</p>
+
+    <div class="trust-bar">
+      <span>⚡ Acesso imediato</span>
+      <span>📱 Celular e PC</span>
+      <span>💳 Pix · Cartão · Boleto</span>
+      <span>🛡️ Garantia de 7 dias</span>
+    </div>
 
     <!-- Preview estilizado da planilha -->
     <div class="preview-wrap">
@@ -635,6 +728,47 @@
   </div>
 </section>
 
+<!--
+  ════════════════════════════════════════════════════════════════
+  SECAO DE DEPOIMENTOS - PRONTA PARA ATIVAR
+  Igor: quando tiver 2-3 falas REAIS dos testadores, peca para o
+  Claude descomentar esta secao e trocar os textos/nomes pelos
+  verdadeiros. Nao usar depoimento inventado.
+  ════════════════════════════════════════════════════════════════
+<section class="depo">
+  <div class="container">
+    <h2 class="section-title">Quem usou, aprovou 💚</h2>
+    <p class="section-sub">Veja o que estão dizendo sobre a Virada Financeira.</p>
+    <div class="depo-grid">
+      <div class="depo-card">
+        <div class="depo-stars">★★★★★</div>
+        <p>"[DEPOIMENTO REAL AQUI]"</p>
+        <div class="depo-autor">
+          <div class="depo-avatar">M</div>
+          <div><div class="nome">[Nome]</div><div class="cargo">[Cidade ou profissão]</div></div>
+        </div>
+      </div>
+      <div class="depo-card">
+        <div class="depo-stars">★★★★★</div>
+        <p>"[DEPOIMENTO REAL AQUI]"</p>
+        <div class="depo-autor">
+          <div class="depo-avatar">J</div>
+          <div><div class="nome">[Nome]</div><div class="cargo">[Cidade ou profissão]</div></div>
+        </div>
+      </div>
+      <div class="depo-card">
+        <div class="depo-stars">★★★★★</div>
+        <p>"[DEPOIMENTO REAL AQUI]"</p>
+        <div class="depo-autor">
+          <div class="depo-avatar">A</div>
+          <div><div class="nome">[Nome]</div><div class="cargo">[Cidade ou profissão]</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+-->
+
 <!-- ── OFERTA ─────────────────────────────────────────────── -->
 <section class="oferta" id="comprar">
   <div class="container">
@@ -659,6 +793,22 @@
       </a>
 
       <p class="garantia">🔒 Pagamento seguro · Kiwify · Pix, Cartão ou Boleto</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── GARANTIA ───────────────────────────────────────────── -->
+<section class="garantia-sec">
+  <div class="container">
+    <div class="garantia-box">
+      <div class="garantia-selo">
+        <span class="n">7</span>
+        <span class="d">dias</span>
+      </div>
+      <div>
+        <h2>Garantia incondicional de 7 dias</h2>
+        <p>Comprou, não gostou ou não era o que esperava? É só pedir e devolvemos 100% do seu dinheiro, sem perguntas. O risco é todo nosso.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -688,7 +838,7 @@
       </details>
       <details>
         <summary>Tem garantia?</summary>
-        <p>Sim. Se por qualquer motivo a planilha não funcionar para você, entre em contato que resolvemos ou devolvemos o valor.</p>
+        <p>Sim! Você tem <b>7 dias de garantia incondicional</b>. Se não gostar ou não for o que esperava, é só pedir o reembolso e devolvemos 100% do valor, sem perguntas.</p>
       </details>
     </div>
   </div>
